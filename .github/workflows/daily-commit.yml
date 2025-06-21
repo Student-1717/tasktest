@@ -1,0 +1,23 @@
+name: Daily Commit Automation
+
+on:
+  schedule:
+    - cron: '15 4 * * *'  # Runs daily at 04:15 UTC
+  workflow_dispatch:
+
+jobs:
+  daily-commit:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout the repo
+      uses: actions/checkout@v4
+
+    - name: Update timestamp – 24f2005754@ds.study.iitm.ac.in
+      run: |
+        echo "Last update: $(date -u)" > last-updated.txt
+        git config user.name "devsync-bot"
+        git config user.email "devsync-bot@example.com"
+        git add last-updated.txt
+        git commit -m "Daily update on $(date -u '+%Y-%m-%d %H:%M:%S')"
+        git push
